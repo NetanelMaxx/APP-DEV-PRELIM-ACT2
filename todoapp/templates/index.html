@@ -47,38 +47,89 @@
             </div>
         </header>
         <!-- Services-->
+         
         <section class="page-section" id="services">
             <div class="container">
-                <div class="text-center">
-                    <h2 class="section-heading text-uppercase">Services</h2>
-                    <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+                <div class="jumbotron text-center">
+                    <h1 class="display-5">Weather App Interface</h1>
+                    <p class="lead">Get real-time weather information!</p>
+                    <img src="{% static 'assets/img/weather.png' %}" alt="Weather Icon" class="img-fluid" style="width: 120px;">
                 </div>
-                <div class="row text-center">
-                    <div class="col-md-4">
-                        <span class="fa-stack fa-4x">
-                            <i class="fas fa-circle fa-stack-2x text-primary"></i>
-                            <i class="fas fa-shopping-cart fa-stack-1x fa-inverse"></i>
-                        </span>
-                        <h4 class="my-3">E-Commerce</h4>
-                        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
-                    </div>
-                    <div class="col-md-4">
-                        <span class="fa-stack fa-4x">
-                            <i class="fas fa-circle fa-stack-2x text-primary"></i>
-                            <i class="fas fa-laptop fa-stack-1x fa-inverse"></i>
-                        </span>
-                        <h4 class="my-3">Responsive Design</h4>
-                        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
-                    </div>
-                    <div class="col-md-4">
-                        <span class="fa-stack fa-4x">
-                            <i class="fas fa-circle fa-stack-2x text-primary"></i>
-                            <i class="fas fa-lock fa-stack-1x fa-inverse"></i>
-                        </span>
-                        <h4 class="my-3">Web Security</h4>
-                        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
-                    </div>
-                </div>
+            
+                <!-- Search Form -->
+                <div class="container">
+                    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                        <form method="post" class="col-md-12">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="city" placeholder="Enter City..." aria-label="City name">
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                </div>
+                            </div>
+                        </form>
+                    </nav>
+            
+                    <!-- Error Message Section -->
+                    {% if error_message %}
+                        <div class="alert alert-danger mt-3" role="alert">
+                            {{ error_message }}
+                        </div>
+                    {% endif %}
+            
+                    <!-- Weather and Previous Searches Section -->
+                    <div class="weather-layout d-flex justify-content-center mt-4 flex-column align-items-center">
+                        <div class="weather-info col-md-6">
+                            {% if country_code and coordinate and temp and pressure and humidity %}
+                            <div class=>
+                                <h3 class="mb-0">Weather in {{ city }}</h3>
+                            </div>
+                            <div class="card-body">
+                                <h4 class="mb-3">
+                                    <span class="badge bg-secondary">Country Code:</span> {{ country_code }}
+                                </h4>
+                                <h4 class="mb-3">
+                                    <span class="badge bg-info">Coordinates:</span> {{ coordinate }}
+                                </h4>
+                                <h4 class="mb-3">
+                                    <span class="badge bg-warning">Temperature:</span> {{ temp }}°C
+                                </h4>
+                                <h4 class="mb-3">
+                                    <span class="badge bg-dark">Pressure:</span> {{ pressure }} hPa
+                                </h4>
+                                <h4 class="mb-3">
+                                    <span class="badge bg-success">Humidity:</span> {{ humidity }}%
+                                </h4>
+                                <h4>
+                                    <span class="badge bg-primary">Forecast:</span> {{ main }} <img src="http://openweathermap.org/img/w/{{ icon }}.png" alt="Weather icon" class="mt-2" style="width: 60px; height: 60px;">
+                                </h4>
+                                <h4>
+                                    <span class="badge bg-info">Description:</span> {{ description }}
+                                </h4>
+                            </div>
+                    
+                            </div>
+                            {% endif %}
+                        </div>
+                     
+                        <div class="container">
+                            <div class="row justify-content-center"> <!-- Centers horizontally -->
+                                <div class="col-md-6 text-center"> <!-- Column that will be centered -->
+                                    <div class="previous-searches">
+                                        <h2 class="section-heading text-uppercase">Previous Searches</h2>
+                                        <ul class="list-group">
+                                            {% for record in weather_records %}
+                                                <li class="list-group-item">{{ record.city }} - {{ record.temperature }}°C</li>
+                                            {% empty %}
+                                                <li class="list-group-item">No previous searches</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                </div>            
             </div>
         </section>
         <!-- Portfolio Grid-->
